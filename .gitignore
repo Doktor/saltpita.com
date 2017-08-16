@@ -1,2 +1,12 @@
+# Keys
+.keys/
+
+# Database file
+data.db
+
+# Python bytecode
+__pycache__/
+.pyc
+
 # Utilities
 activate.bat
