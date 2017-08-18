@@ -20,6 +20,7 @@ class Page(models.Model):
 
     class Meta:
         abstract = True
+        ordering = ['position', 'pk']
 
 
 class Collection(Page):
@@ -66,6 +67,9 @@ class Artwork(models.Model):
     @property
     def filename(self):
         return os.path.basename(self.image.name)
+
+    class Meta:
+        ordering = ['position', 'pk']
 
 
 @receiver(pre_save, sender=Artwork)
