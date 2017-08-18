@@ -10,3 +10,6 @@ __pycache__/
 
 # Utilities
 activate.bat
+
+# PyCharm files
+.idea/
