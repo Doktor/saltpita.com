@@ -1,6 +1,12 @@
-import os
+from django.core.files import File
 from django.db import models
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
 from django.utils.text import slugify
+
+import os
+import PIL.Image
+from io import BytesIO
 
 
 class Page(models.Model):
@@ -56,3 +62,68 @@ class Artwork(models.Model):
     created = models.DateField(blank=True, null=True)
 
     position = models.PositiveIntegerField(default=0)
+
+    @property
+    def filename(self):
+        return os.path.basename(self.image.name)
+
+
+@receiver(pre_save, sender=Artwork)
+def update_thumbnail(sender, instance, *args, **kwargs):
+    """Updates the thumbnail for an artwork object."""
+    artwork = instance
+
+    try:
+        previous = Artwork.objects.get(pk=artwork.pk)
+    # New object
+    except Artwork.DoesNotExist:
+        tb = create_thumbnail(artwork)
+    else:
+        # New file
+        if previous.image != artwork.image:
+            tb = create_thumbnail(artwork)
+        else:
+            return
+
+    # Delete the existing thumbnail, if it exists
+    if artwork.thumbnail:
+        artwork.thumbnail.delete(save=False)
+
+    artwork.thumbnail.save(artwork.filename, File(tb), save=False)
+
+
+def create_thumbnail(artwork):
+    """Creates a 500x500 square thumbnail for an artwork object."""
+    artwork.image.open()
+
+    image = PIL.Image.open(artwork.image)
+
+    w = image.width
+    h = image.height
+
+    if w > h:
+        x1 = 0.5 * w - 0.5 * h
+        y1 = 0
+        x2 = 0.5 * w + 0.5 * h
+        y2 = h
+    elif w < h:
+        x1 = 0
+        y1 = 0.5 * h - 0.5 * w
+        x2 = w
+        y2 = 0.5 * h + 0.5 * w
+    elif w == h:
+        x1 = 0
+        y1 = 0
+        x2 = w
+        y2 = h
+
+    bounds = map(int, (x1, y1, x2, y2))
+
+    image = image.crop(bounds)
+    image.thumbnail((500, 500), PIL.Image.ANTIALIAS)
+
+    data = BytesIO()
+    image.save(data, 'JPEG', quality=85)
+
+    artwork.image.close()
+    return data
