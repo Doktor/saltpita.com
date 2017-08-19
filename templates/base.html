@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  {% load staticfiles %}
+
+  <title>{% block title %}art by pita!{% endblock %}</title>
+  <meta name="author" content="Peter Sang">
+  <meta name="description" content="{% block description %}the art of Peter Sang{% endblock %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% block meta %}{% endblock %}
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css">
+
+  {% block style %}{% endblock %}
+</head>
+
+<body>
+{% block content %}{% endblock %}
+</body>
+</html>
