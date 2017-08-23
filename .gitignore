@@ -13,3 +13,6 @@ activate.bat
 
 # PyCharm files
 .idea/
+
+# Migrations
+pita/migrations/
