@@ -1,11 +1,12 @@
 from django.core.files import File
 from django.db import models
-from django.db.models.signals import pre_save
+from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.utils.text import slugify
 
 import os
 import PIL.Image
+import uuid
 from io import BytesIO
 
 
@@ -36,8 +37,13 @@ class Redirect(Page):
 
 
 def get_artwork_path(artwork, original_name):
-    root, ext = os.path.splitext(original_name)
-    return "{pk:04}.{ext}".format(pk=artwork.pk, ext=ext.lstrip('.'))
+    _, ext = os.path.splitext(original_name)
+    ext = ext.lstrip('.')
+
+    if artwork.pk is not None:
+        return "{base:04d}.{ext}".format(base=artwork.pk, ext=ext)
+    else:
+        return "{base}.{ext}".format(base=uuid.uuid4(), ext=ext)
 
 
 def get_thumbnail_path(artwork, original_name):
@@ -72,28 +78,74 @@ class Artwork(models.Model):
         ordering = ['position', 'pk']
 
 
-@receiver(pre_save, sender=Artwork)
+@receiver(pre_save, sender=Artwork, dispatch_uid='pita.models.update_thumb')
 def update_thumbnail(sender, instance, *args, **kwargs):
     """Updates the thumbnail for an artwork object."""
     artwork = instance
 
-    try:
-        previous = Artwork.objects.get(pk=artwork.pk)
+    if hasattr(artwork, '_rename'):
+        del artwork._rename
+        return
+
     # New object
-    except Artwork.DoesNotExist:
+    if artwork.pk is None:
         tb = create_thumbnail(artwork)
     else:
-        # New file
-        if previous.image != artwork.image:
-            tb = create_thumbnail(artwork)
-        else:
+        # Existing object, check if the image changed
+        current = Artwork.objects.get(pk=artwork.pk)
+        if current.image == artwork.image:
             return
+
+        artwork._update = True
+        tb = create_thumbnail(artwork)
 
     # Delete the existing thumbnail, if it exists
     if artwork.thumbnail:
         artwork.thumbnail.delete(save=False)
 
     artwork.thumbnail.save(artwork.filename, File(tb), save=False)
+
+
+@receiver(post_save, sender=Artwork, dispatch_uid='pita.models.rename_files')
+def rename_files(sender, instance, created, *args, **kwargs):
+    """Renames image files after an artwork object is created or updated."""
+    artwork = instance
+
+    # Existing object, new image
+    if hasattr(artwork, '_update'):
+        assert not created
+        del artwork._update
+
+        # We only have to rename the image: the old thumbnail is deleted in
+        # the pre-save receiver, which frees up the filename for the new thumb
+        image = artwork.image
+        current_path = image.path
+        image.name = get_artwork_path(artwork, image.name)
+
+        os.remove(image.path)
+        os.rename(current_path, image.path)
+
+        artwork._rename = True
+        artwork.save()
+        return
+
+    if not created:
+        return
+
+    # Rename the image file
+    image = artwork.image
+    old_path = image.path
+    image.name = get_artwork_path(artwork, image.name)
+    os.rename(old_path, image.path)
+
+    # Rename the thumbnail file
+    thumbnail = artwork.thumbnail
+    old_path = thumbnail.path
+    thumbnail.name = get_thumbnail_path(artwork, thumbnail.name)
+    os.rename(old_path, thumbnail.path)
+
+    artwork._rename = True
+    artwork.save()
 
 
 def create_thumbnail(artwork):
@@ -129,5 +181,4 @@ def create_thumbnail(artwork):
     data = BytesIO()
     image.save(data, 'JPEG', quality=85)
 
-    artwork.image.close()
     return data
