@@ -9,10 +9,13 @@ __pycache__/
 .pyc
 
 # Utilities
-activate.bat
+*.bat
 
 # PyCharm files
 .idea/
 
 # Migrations
 pita/migrations/
+
+# Media files
+media/
