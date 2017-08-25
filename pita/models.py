@@ -19,6 +19,9 @@ class Page(models.Model):
         self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
+    def __str__(self):
+        return "Page: {}".format(self.title)
+
     class Meta:
         abstract = True
         ordering = ['position', 'pk']
@@ -73,6 +76,9 @@ class Artwork(models.Model):
     @property
     def filename(self):
         return os.path.basename(self.image.name)
+
+    def __str__(self):
+        return "Artwork #{}".format(self.pk)
 
     class Meta:
         ordering = ['position', 'pk']
