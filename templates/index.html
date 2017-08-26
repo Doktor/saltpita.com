@@ -8,6 +8,7 @@
 
 <section class="artwork">
 {% if artworks %}
+  <div class="container">
   {% for item in artworks %}
     <div class="item">
       <a href="{{ item.image.url }}" title="{{ item.summary }}">
@@ -15,6 +16,7 @@
       </a>
     </div>
   {% endfor %}
+  </div>
 {% else %}
   <p><em>No artwork available</em></p>
 {% endif %}

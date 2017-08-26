@@ -19,22 +19,33 @@ body {
 }
 
 .artwork {
-  width: 100%;
-  margin: 0 -5px;
+  margin-top: 1rem;
+
+  &::after {
+    content: ' ';
+    display: table;
+    clear: both;
+  }
+
+  .container {
+    margin: 0 -5px;
+  }
 
   .item {
     float: left;
     width: 20%;
-    padding: 4px;
+    padding: 5px;
 
     img {
       display: block;
       width: 100%;
       filter: brightness(1.0);
     }
+
     &:hover img {
       filter: brightness(0.6);
     }
+
     img, &:hover img {
       transition: filter 0.2s ease-in-out;
     }
