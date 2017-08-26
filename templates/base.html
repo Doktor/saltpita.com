@@ -17,7 +17,21 @@
 </head>
 
 <body>
-{% block content %}{% endblock %}
+  <header>
+    <nav>
+      <ul class="horizontal">
+        <li class="name"><a href="">PETER SANG</a></li>
+      {% for page in pages %}
+        {% with title=page.title %}
+        {% if title == text.title %}<li class="selected">{% else %}<li>{% endif %}
+        <a href="{{ page.get_absolute_url }}">{{ page.title.lower }}</a></li>
+        {% endwith %}
+      {% endfor %}
+      </ul>
+    </nav>
+  </header>
+
+  {% block content %}{% endblock %}
 
   <footer>
     <ul class="horizontal">

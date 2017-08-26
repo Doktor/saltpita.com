@@ -7,22 +7,11 @@
 {% endblock %}
 
 {% block content %}
-<header>
-  <nav>
-    <ul class="horizontal">
-      <li class="name"><a href="">PETER SANG</a></li>
-    {% for page in pages %}
-      {% with title=page.title %}
-      {% if title == collection.title %}<li class="selected">{% else %}<li>{% endif %}
-      <a href="{{ page.get_absolute_url }}">{{ page.title.lower }}</a></li>
-      {% endwith %}
-    {% endfor %}
-    </ul>
-  </nav>
-  {% if collection.description %}
+{% if collection.description %}
+<section>
   <p>{{ collection.description }}</p>
-  {% endif %}
-</header>
+</section>
+{% endif %}
 
 {% with items=collection.artworks.all %}
 <section class="artwork">
