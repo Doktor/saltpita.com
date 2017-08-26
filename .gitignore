@@ -19,3 +19,7 @@ pita/migrations/
 
 # Media files
 media/
+
+# Compiled CSS files
+*.css
+*.css.map

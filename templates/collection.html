@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}{{ collection.title.lower }}{% endblock %}
+
+{% block style %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/luminous-lightbox/1.0.1/luminous-basic.min.css">
+{% endblock %}
+
+{% block content %}
+<header>
+  <nav>
+    <ul>
+    {% for page in pages %}
+      <li><a href="{{ page.get_absolute_url }}">{{ page.title.lower }}</a></li>
+    {% endfor %}
+    </ul>
+  </nav>
+  <h1>{{ collection.title }}</h1>
+</header>
+
+<section class="artwork">
+{% for item in collection.artworks.all %}
+  <div class="item">
+    <a href="{{ item.image.url }}" title="{{ item.summary }}">
+      <img src="{{ item.thumbnail.url }}" alt="{{ item.summary }}">
+    </a>
+  </div>
+{% endfor %}
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/luminous-lightbox/1.0.1/Luminous.min.js"></script>
+<script>
+  var luminous = new LuminousGallery(document.querySelectorAll('.item a'));
+</script>
+{% endblock %}

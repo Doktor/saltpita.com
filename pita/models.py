@@ -2,6 +2,7 @@ from django.core.files import File
 from django.db import models
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
+from django.urls import reverse
 from django.utils.text import slugify
 
 import os
@@ -14,6 +15,9 @@ class Page(models.Model):
     title = models.CharField(max_length=20, unique=True)
     slug = models.SlugField(max_length=20, blank=True, unique=True)
     position = models.PositiveIntegerField(default=0)
+
+    def get_absolute_url(self):
+        return reverse('page', kwargs={'slug': self.slug})
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
@@ -76,6 +80,11 @@ class Artwork(models.Model):
     @property
     def filename(self):
         return os.path.basename(self.image.name)
+
+    @property
+    def summary(self):
+        """The summary for this item, used for link/image alt text."""
+        return self.description or self.title or str(self)
 
     def __str__(self):
         return "Artwork #{}".format(self.pk)

@@ -10,7 +10,14 @@ def page(request, slug):
     except Collection.DoesNotExist:
         pass
     else:
-        return render(request, "collection.html", context={'collection': c})
+        # TODO: get all types of pages, instead of only collections
+        pages = Collection.objects.all()[:10]
+
+        context = {
+            'collection': c,
+            'pages': pages,
+        }
+        return render(request, "collection.html", context=context)
 
     try:
         t = Text.objects.get(slug=slug)
