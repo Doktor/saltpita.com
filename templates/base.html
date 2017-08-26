@@ -20,7 +20,7 @@
   <header>
     <nav>
       <ul class="horizontal">
-        <li class="name"><a href="">PETER SANG</a></li>
+        <li class="name"><a href="{% url 'index' %}">PETER SANG</a></li>
       {% for page in pages %}
         {% with title=page.title %}
         {% if title == text.title %}<li class="selected">{% else %}<li>{% endif %}

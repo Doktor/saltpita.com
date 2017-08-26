@@ -3,15 +3,30 @@ from django.shortcuts import render, redirect
 
 from itertools import chain
 
-from pita.models import Collection, Text, Redirect
+from pita.models import Artwork, Collection, Text, Redirect
 
 
-def page(request, slug):
+def get_pages():
     # TODO: https://stackoverflow.com/questions/18742870/
-    pages = sorted(chain(
+    return sorted(chain(
         Collection.objects.all(), Text.objects.all(), Redirect.objects.all()),
         key=lambda item: item.title.lower()
     )
+
+
+def index(request):
+    pages = get_pages()
+    artworks = Artwork.objects.all()
+
+    context = {
+        'artworks': artworks,
+        'pages': pages,
+    }
+    return render(request, 'index.html', context=context)
+
+
+def page(request, slug):
+    pages = get_pages()
 
     try:
         c = Collection.objects.get(slug=slug)
@@ -20,6 +35,7 @@ def page(request, slug):
     else:
         context = {
             'collection': c,
+            'artworks': c.artworks,
             'pages': pages,
         }
         return render(request, "collection.html", context=context)

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block style %}
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/luminous-lightbox/1.0.1/luminous-basic.min.css">
+{% endblock %}
+
+{% block content %}
+
+<section class="artwork">
+{% if artworks %}
+  {% for item in artworks %}
+    <div class="item">
+      <a href="{{ item.image.url }}" title="{{ item.summary }}">
+        <img src="{{ item.thumbnail.url }}" alt="{{ item.summary }}">
+      </a>
+    </div>
+  {% endfor %}
+{% else %}
+  <p><em>No artwork available</em></p>
+{% endif %}
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/luminous-lightbox/1.0.1/Luminous.min.js"></script>
+<script>
+  var luminous = new LuminousGallery(document.querySelectorAll('.item a'));
+</script>
+{% endblock %}

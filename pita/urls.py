@@ -16,5 +16,6 @@ if settings.DEBUG:
                           document_root=settings.MEDIA_ROOT)
 
 urlpatterns += [
+    url(r'^$', views.index, name='index'),
     url(r'^(?P<slug>[a-z0-9]+(?:-[a-z0-9]+)*)$', views.page, name='page'),
 ]
