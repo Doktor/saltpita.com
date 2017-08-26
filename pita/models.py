@@ -9,6 +9,7 @@ import os
 import PIL.Image
 import uuid
 from io import BytesIO
+from markdown import markdown
 
 
 class Page(models.Model):
@@ -36,7 +37,15 @@ class Collection(Page):
 
 
 class Text(Page):
-    content = models.TextField(blank=True)
+    content = models.TextField(
+        blank=True, help_text="Markdown formatting supported")
+    html = models.TextField(blank=True, editable=False)
+
+
+@receiver(pre_save, sender=Text, dispatch_uid='pita.models.parse_markdown')
+def parse_markdown(sender, instance, *args, **kwargs):
+    """Parses the content of a text page and updates the stored HTML."""
+    instance.html = markdown(instance.content)
 
 
 class Redirect(Page):

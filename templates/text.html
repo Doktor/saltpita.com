@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}{{ text.title.lower }}{% endblock %}
+
+{% block content %}
+<header>
+  <nav>
+    <ul>
+      <li class="name"><a href="">PETER SANG</a></li>
+    {% for page in pages %}
+      {% with title=page.title %}
+      {% if title == text.title %}<li class="selected">{% else %}<li>{% endif %}
+      <a href="{{ page.get_absolute_url }}">{{ page.title.lower }}</a></li>
+      {% endwith %}
+    {% endfor %}
+    </ul>
+  </nav>
+</header>
+
+<section class="text">
+  {{ text.html|safe }}
+</section>
+{% endblock %}
