@@ -3,11 +3,13 @@
 {% block title %}{{ text.title.lower }}{% endblock %}
 
 {% block content %}
-<section class="text">
 {% if text.html %}
+<section class="text">
   {{ text.html|safe }}
-{% else %}
-  <p><em>No content on this page</em></p>
-{% endif %}
 </section>
+{% else %}
+<section class="text empty">
+  <p><em>No content on this page</em></p>
+</section>
+{% endif %}
 {% endblock %}
