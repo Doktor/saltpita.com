@@ -100,3 +100,30 @@ nav {
     font-size: 2.6rem;
   }
 }
+
+footer {
+  clear: both;
+  margin: 0 auto;
+  padding-top: 2rem;
+
+  ul {
+    list-style: none;
+    clear: both;
+    margin: 0;
+    padding: 0;
+  }
+
+  ul::after {
+    content: ' ';
+    display: table;
+    clear: both;
+  }
+
+  li {
+    font-size: 1rem;
+    line-height: 2rem;
+    float: left;
+    margin: 0 2rem 0 0;
+    position: relative;
+  }
+}
