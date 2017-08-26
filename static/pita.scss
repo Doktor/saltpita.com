@@ -58,27 +58,6 @@ body {
 }
 
 nav {
-  ul {
-    list-style: none;
-    clear: both;
-    margin: 0;
-    padding: 0;
-  }
-
-  ul::after {
-    content: ' ';
-    display: table;
-    clear: both;
-  }
-
-  li {
-    font-size: 1rem;
-    line-height: 2rem;
-    float: left;
-    margin: 0 2rem 0 0;
-    position: relative;
-  }
-
   a {
     color: rgb(150, 150, 150);
     text-decoration: none;
@@ -101,19 +80,13 @@ nav {
   }
 }
 
-footer {
+ul.horizontal {
+  list-style: none;
   clear: both;
-  margin: 0 auto;
-  padding-top: 2rem;
+  margin: 0;
+  padding: 0;
 
-  ul {
-    list-style: none;
-    clear: both;
-    margin: 0;
-    padding: 0;
-  }
-
-  ul::after {
+  &::after {
     content: ' ';
     display: table;
     clear: both;
@@ -126,4 +99,10 @@ footer {
     margin: 0 2rem 0 0;
     position: relative;
   }
+}
+
+footer {
+  clear: both;
+  margin: 0 auto;
+  padding-top: 2rem;
 }
