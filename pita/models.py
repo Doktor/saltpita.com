@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.core.files import File
 from django.db import models
 from django.db.models.signals import post_save, pre_save
@@ -16,6 +17,11 @@ class Page(models.Model):
     title = models.CharField(max_length=20, unique=True)
     slug = models.SlugField(max_length=20, blank=True, unique=True)
     position = models.PositiveIntegerField(default=0)
+
+    def clean(self):
+        if self.title.lower() == 'admin':
+            raise ValidationError(
+                "You can't create a page with the title 'admin'.")
 
     def get_absolute_url(self):
         return reverse('page', kwargs={'slug': self.slug})
