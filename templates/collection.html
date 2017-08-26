@@ -11,11 +11,16 @@
   <nav>
     <ul>
     {% for page in pages %}
-      <li><a href="{{ page.get_absolute_url }}">{{ page.title.lower }}</a></li>
+      {% with title=page.title %}
+      {% if title == collection.title %}<li class="selected">{% else %}<li>{% endif %}
+      <a href="{{ page.get_absolute_url }}">{{ page.title.lower }}</a></li>
+      {% endwith %}
     {% endfor %}
     </ul>
   </nav>
-  <h1>{{ collection.title }}</h1>
+  {% if collection.description %}
+  <p>{{ collection.description }}</p>
+  {% endif %}
 </header>
 
 {% with items=collection.artworks.all %}

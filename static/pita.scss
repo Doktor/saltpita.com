@@ -39,16 +39,6 @@ body {
 }
 
 nav {
-  a {
-    color: rgb(150, 150, 150);
-    text-decoration: none;
-
-    &:hover {
-      color: black;
-      text-decoration: underline;
-    }
-  }
-
   ul {
     list-style: none;
     clear: both;
@@ -63,8 +53,25 @@ nav {
   }
 
   li {
+    font-size: 1rem;
+    line-height: 2rem;
     float: left;
     margin: 0 2rem 0 0;
     position: relative;
+  }
+
+  a {
+    color: rgb(150, 150, 150);
+    text-decoration: none;
+
+    &:hover {
+      color: black;
+      text-decoration: underline;
+    }
+  }
+
+  .selected a {
+    color: black;
+    font-size: 1.3rem;
   }
 }
