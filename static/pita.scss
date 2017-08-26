@@ -20,14 +20,17 @@ body {
 
 .artwork {
   width: 100%;
+  margin: 0 -5px;
 
   .item {
     float: left;
     width: 20%;
+    padding: 4px;
 
     img {
-      filter: brightness(1.0);
+      display: block;
       width: 100%;
+      filter: brightness(1.0);
     }
     &:hover img {
       filter: brightness(0.6);
