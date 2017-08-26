@@ -18,6 +18,10 @@
 </header>
 
 <section class="text">
+{% if text.html %}
   {{ text.html|safe }}
+{% else %}
+  <p><em>No content on this page</em></p>
+{% endif %}
 </section>
 {% endblock %}
