@@ -211,7 +211,7 @@ def create_thumbnail(artwork):
     bounds = map(int, (x1, y1, x2, y2))
 
     image = image.crop(bounds)
-    image.thumbnail((500, 500), PIL.Image.ANTIALIAS)
+    image.thumbnail((400, 400), PIL.Image.ANTIALIAS)
 
     data = BytesIO()
     image.save(data, 'JPEG', quality=75, optimize=True)
