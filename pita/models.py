@@ -58,9 +58,10 @@ class Redirect(Page):
     link = models.URLField(max_length=500)
 
 
-def get_artwork_path(artwork, original_name):
-    _, ext = os.path.splitext(original_name)
-    ext = ext.lstrip('.')
+def get_artwork_path(artwork, original_name, ext=None):
+    if ext is None:
+        _, ext = os.path.splitext(original_name)
+        ext = ext.lstrip('.')
 
     if artwork.pk is not None:
         return "{base:04d}.{ext}".format(base=artwork.pk, ext=ext)
@@ -69,7 +70,8 @@ def get_artwork_path(artwork, original_name):
 
 
 def get_thumbnail_path(artwork, original_name):
-    return "thumb/{full}".format(full=get_artwork_path(artwork, original_name))
+    return "thumb/{full}".format(
+        full=get_artwork_path(artwork, original_name, ext='jpg'))
 
 
 class Artwork(models.Model):
@@ -184,6 +186,9 @@ def create_thumbnail(artwork):
 
     image = PIL.Image.open(artwork.image)
 
+    if image.format != 'JPEG':
+        image = image.convert('RGB')
+
     w = image.width
     h = image.height
 
@@ -209,6 +214,6 @@ def create_thumbnail(artwork):
     image.thumbnail((500, 500), PIL.Image.ANTIALIAS)
 
     data = BytesIO()
-    image.save(data, 'JPEG', quality=85)
+    image.save(data, 'JPEG', quality=75, optimize=True)
 
     return data
