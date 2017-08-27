@@ -180,8 +180,8 @@ def rename_files(sender, instance, created, *args, **kwargs):
     artwork.save()
 
 
-def create_thumbnail(artwork):
-    """Creates a 500x500 square thumbnail for an artwork object."""
+def create_thumbnail(artwork, size=(400, 400)):
+    """Creates a square thumbnail for an artwork object."""
     artwork.image.open()
 
     image = PIL.Image.open(artwork.image)
@@ -189,8 +189,13 @@ def create_thumbnail(artwork):
     if image.format != 'JPEG':
         image = image.convert('RGB')
 
-    w = image.width
-    h = image.height
+    # Upscale small images
+    if image.size < size:
+        w, h = image.size
+        ratio = max(size[0] / w, size[1] / h)
+        image = image.resize((w * ratio, h * ratio), PIL.Image.BICUBIC)
+
+    w, h = image.size
 
     if w > h:
         x1 = 0.5 * w - 0.5 * h
@@ -211,7 +216,7 @@ def create_thumbnail(artwork):
     bounds = map(int, (x1, y1, x2, y2))
 
     image = image.crop(bounds)
-    image.thumbnail((400, 400), PIL.Image.ANTIALIAS)
+    image.thumbnail(size)
 
     data = BytesIO()
     image.save(data, 'JPEG', quality=75, optimize=True)
