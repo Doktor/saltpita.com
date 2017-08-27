@@ -23,3 +23,6 @@ media/
 # Compiled CSS files
 *.css
 *.css.map
+
+# Development mode
+development

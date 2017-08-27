@@ -8,7 +8,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 with open('.keys/secret_key.txt', 'r') as f:
     SECRET_KEY = f.read().strip()
 
-DEBUG = True
+DEBUG = os.path.isfile('development')
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
@@ -108,7 +108,11 @@ SHORT_DATETIME_FORMAT = 'm-d H:i'
 
 # Static files
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+if DEBUG:
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 STATIC_URL = '/static/'
 
 
