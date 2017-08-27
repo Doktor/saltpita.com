@@ -34,6 +34,7 @@ def page(request, slug):
         pass
     else:
         context = {
+            'title': c.title,
             'collection': c,
             'artworks': c.artworks,
             'pages': pages,
@@ -46,6 +47,7 @@ def page(request, slug):
         pass
     else:
         context = {
+            'title': t.title,
             'text': t,
             'pages': pages,
         }

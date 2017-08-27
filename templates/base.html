@@ -22,10 +22,8 @@
       <ul class="horizontal">
         <li class="name"><a href="{% url 'index' %}">PETER SANG</a></li>
       {% for page in pages %}
-        {% with title=page.title %}
-        {% if title == text.title %}<li class="selected">{% else %}<li>{% endif %}
+        {% if page.title == title %}<li class="selected">{% else %}<li>{% endif %}
         <a href="{{ page.get_absolute_url }}">{{ page.title.lower }}</a></li>
-        {% endwith %}
       {% endfor %}
       </ul>
     </nav>
