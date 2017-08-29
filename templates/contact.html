@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Contact{% endblock %}
+
+{% block content %}
+{% if messages %}
+<section id="messages">
+  {% for m in messages %}
+    <div class="message {{ m.tags }}">{{ m }}</div>
+  {% endfor %}
+</section>
+{% endif %}
+
+<section class="contact">
+  <p>{{ description }}</p>
+
+  <form action="{% url 'contact' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="field">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" required>
+    </div>
+    <div class="field">
+      <label for="from_email">Email</label>
+      <input type="email" id="from_email" name="from_email" required>
+    </div>
+    <div class="field">
+      <label for="subject">Subject</label>
+      <input type="text" id="subject" name="subject" required>
+    </div>
+    <div class="field">
+      <label for="message">Message</label>
+      <textarea id="message" name="message" required></textarea>
+    </div>
+    <div class="submit">
+      <button type="submit">Send</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

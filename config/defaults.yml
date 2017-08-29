@@ -1,0 +1,15 @@
+contact:
+  # The text to display above the contact form. Plain text only.
+  description: ""
+  email: ""
+  prefix: [saltedpita.com]
+  messages:
+    api_error: >
+      The server is unable to send email -
+      please try directly sending an email to {email}.
+    error: >
+      An unknown error occurred when sending your email.
+      Please try again later, or directly sending an email to {email}.
+    invalid: Something went wrong - please try again.
+    invalid_address: Invalid email address.
+    success: Email sent successfully.

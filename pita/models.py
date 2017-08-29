@@ -18,10 +18,12 @@ class Page(models.Model):
     slug = models.SlugField(max_length=20, blank=True, unique=True)
     position = models.PositiveIntegerField(default=0)
 
+    reserved_titles = ['admin', 'contact']
+
     def clean(self):
-        if self.title.lower() == 'admin':
-            raise ValidationError(
-                "You can't create a page with the title 'admin'.")
+        if self.title.lower() in self.reserved_titles:
+            raise ValidationError("The page title '{}' is reserved for "
+                "internal use.".format(self.title))
 
     def get_absolute_url(self):
         return reverse('page', kwargs={'slug': self.slug})

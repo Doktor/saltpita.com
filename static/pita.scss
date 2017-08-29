@@ -139,3 +139,51 @@ footer {
   margin: 0 auto;
   padding-top: 2rem;
 }
+
+.contact {
+  width: 100%;
+  margin: 0 auto;
+
+  @media (min-width: 1200px) {
+    width: 50%;
+  }
+
+  form {
+    width: 100%;
+  }
+
+  label {
+    display: block;
+    text-align: left;
+    width: 100%;
+  }
+
+  input {
+    width: 100%;
+  }
+
+  textarea {
+    vertical-align: top;
+    text-align: left;
+    width: 100%;
+    padding: 3pt 6pt;
+  }
+
+  .field {
+    margin: 1rem 0;
+  }
+  .field.submit {
+    margin-top: 2rem;
+  }
+}
+
+#messages {
+  width: 100%;
+  text-align: center;
+  margin: 1.5rem 0;
+}
+.message {
+  padding: 0.5rem;
+  border: 2px solid;
+  font-weight: 400;
+}

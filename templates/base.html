@@ -25,6 +25,8 @@
         {% if page.title == title %}<li class="selected">{% else %}<li>{% endif %}
         <a href="{{ page.get_absolute_url }}">{{ page.title.lower }}</a></li>
       {% endfor %}
+        {% if title == 'Contact' %}<li class="selected">{% else %}<li>{% endif %}
+        <a href="{% url 'contact' %}">contact</a></li>
       </ul>
     </nav>
   </header>
