@@ -1,9 +1,16 @@
 import os
-
+import yaml
 
 # General
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+with open(os.path.join(BASE_DIR, 'config', 'defaults.yml'), 'r') as f:
+    CONFIG = yaml.safe_load(f) or {}
+
+with open(os.path.join(BASE_DIR, 'config', 'pita.yml'), 'r') as f:
+    USER_CONFIG = yaml.safe_load(f) or {}
+    CONFIG.update(USER_CONFIG)
 
 with open('.keys/secret_key.txt', 'r') as f:
     SECRET_KEY = f.read().strip()
