@@ -22,6 +22,18 @@ ALLOWED_HOSTS = [
     'saltedpita.com',
 ]
 
+# Email settings
+
+with open(os.path.join(BASE_DIR, '.keys/mailgun.txt'), 'r') as f:
+    MAILGUN_API_KEY = f.read().strip()
+
+ANYMAIL = {
+    'MAILGUN_API_KEY': MAILGUN_API_KEY,
+    'MAILGUN_SENDER_DOMAIN': 'saltedpita.com',
+}
+
+EMAIL_BACKEND = 'anymail.backends.mailgun.MailgunBackend'
+DEFAULT_FROM_EMAIL = 'Django <django@saltedpita.com>'
 
 # Application definition
 
@@ -33,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'pita',
+    'anymail',
 ]
 
 MIDDLEWARE = [
