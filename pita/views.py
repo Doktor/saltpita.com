@@ -21,7 +21,7 @@ def get_pages():
 
 def index(request):
     pages = get_pages()
-    artworks = Artwork.objects.all()
+    artworks = Artwork.objects.filter(collection=None)
 
     context = {
         'artworks': artworks,
