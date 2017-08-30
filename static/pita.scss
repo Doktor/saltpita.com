@@ -97,13 +97,20 @@ nav {
 
     &:hover {
       color: black;
-      text-decoration: underline;
     }
   }
 
   .selected a {
     color: black;
     font-size: 1.3rem;
+
+    &::before {
+      content: "[";
+    }
+
+    &::after {
+      content: "]";
+    }
   }
 
   .name a {
