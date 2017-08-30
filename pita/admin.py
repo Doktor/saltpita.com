@@ -59,17 +59,17 @@ class RedirectAdmin(BaseAdmin):
 @admin.register(Artwork)
 class ArtworkAdmin(BaseAdmin):
     list_display = (
-        '__str__', 'title', 'description', 'collection_title',
+        'pk', 'title', 'description', 'collection_title',
         'width', 'height',
         'uploaded', 'created', 'position')
-    ordering = ('-uploaded',)
+    ordering = ('position', '-pk')
 
     fieldsets = (
         ('Image', {
             'fields': ('image', 'preview', 'dimensions')
         }),
         ('Metadata', {
-            'fields': ('title', 'description', 'collection')
+            'fields': ('title', 'description', 'collection', 'position')
         }),
         ('Dates', {
             'fields': ('uploaded', 'created')

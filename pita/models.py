@@ -106,7 +106,7 @@ class Artwork(models.Model):
     @property
     def summary(self):
         """The summary for this item, used for link/image alt text."""
-        return self.description or self.title or str(self)
+        return self.description or self.title or "Untitled"
 
     def __str__(self):
         return "Artwork #{}".format(self.pk)
