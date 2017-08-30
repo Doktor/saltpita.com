@@ -132,6 +132,10 @@ nav {
     color: black;
     font-weight: 700;
     font-size: 2.6rem;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 
@@ -166,6 +170,10 @@ footer {
   width: 100%;
   margin: 0 auto;
 
+  p {
+    text-align: center;
+  }
+
   @media (min-width: 1200px) {
     width: 50%;
   }
@@ -180,15 +188,14 @@ footer {
     width: 100%;
   }
 
-  input {
+  input, textarea {
+    padding: 4px 8px;
     width: 100%;
   }
 
   textarea {
     vertical-align: top;
     text-align: left;
-    width: 100%;
-    padding: 3pt 6pt;
   }
 
   .field {
