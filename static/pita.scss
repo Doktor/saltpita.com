@@ -69,6 +69,21 @@ $width: 400px;
   }
 }
 
+.lum-lightbox-inner {
+  // The bottom part of a caption is cut off; this fixes it
+  img {
+    height: 99%;
+    max-width: none;
+    max-height: none;
+  }
+
+  .lum-lightbox-caption {
+    max-width: 1000px !important;
+    font-size: 1.25rem;
+    line-height: 1.2;
+  }
+}
+
 .text {
   width: 60%;
   margin: 0 auto;

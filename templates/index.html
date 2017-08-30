@@ -6,24 +6,5 @@
 
 {% block content %}
 
-<section class="artwork">
-{% if artworks %}
-  <div class="container">
-  {% for item in artworks %}
-    <div class="item">
-      <a href="{{ item.image.url }}" title="{{ item.summary }}">
-        <img src="{{ item.thumbnail.url }}" alt="{{ item.summary }}">
-      </a>
-    </div>
-  {% endfor %}
-  </div>
-{% else %}
-  <p><em>No artwork available</em></p>
-{% endif %}
-</section>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/luminous-lightbox/1.0.1/Luminous.min.js"></script>
-<script>
-  var luminous = new LuminousGallery(document.querySelectorAll('.item a'));
-</script>
+{% include "gallery.html" with items=artworks %}
 {% endblock %}
