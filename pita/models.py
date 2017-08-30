@@ -11,9 +11,12 @@ import PIL.Image
 import uuid
 from io import BytesIO
 from markdown import markdown
+from model_utils.managers import InheritanceManager
 
 
 class Page(models.Model):
+    objects = InheritanceManager()
+
     title = models.CharField(max_length=20, unique=True)
     slug = models.SlugField(max_length=20, blank=True, unique=True)
     position = models.PositiveIntegerField(default=0)
@@ -36,7 +39,6 @@ class Page(models.Model):
         return "Page: {}".format(self.title)
 
     class Meta:
-        abstract = True
         ordering = ['position', 'pk']
 
 

@@ -6,15 +6,13 @@ from django.shortcuts import render, redirect
 from django.views import View
 
 from anymail.exceptions import AnymailAPIError, AnymailInvalidAddress
-from itertools import chain
 
-from pita.models import Artwork, Collection, Text, Redirect
+from pita.models import Artwork, Collection, Page, Redirect, Text
 
 
 def get_pages():
-    # TODO: https://stackoverflow.com/questions/18742870/
-    return sorted(chain(
-        Collection.objects.all(), Text.objects.all(), Redirect.objects.all()),
+    return sorted(
+        Page.objects.select_subclasses(),
         key=lambda item: item.title.lower()
     )
 

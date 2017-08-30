@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from pita.models import Collection, Text, Redirect, Artwork
+from pita.models import Artwork, Collection, Page, Redirect, Text
 
 
 class BaseAdmin(admin.ModelAdmin):
@@ -28,6 +28,11 @@ class BaseAdmin(admin.ModelAdmin):
             out.append((name, options))
 
         return out
+
+
+@admin.register(Page)
+class PageAdmin(BaseAdmin):
+    list_display = ('title', 'slug', 'position')
 
 
 @admin.register(Collection)
