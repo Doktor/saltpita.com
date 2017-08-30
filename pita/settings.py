@@ -1,5 +1,18 @@
+import collections
 import os
 import yaml
+
+
+def update(base, new):
+    """Recursively updates a dictionary."""
+    for k, v in new.items():
+        if isinstance(v, collections.Mapping):
+            temp = update(base.get(k, {}), v)
+            base[k] = temp
+        else:
+            base[k] = new[k]
+    return base
+
 
 # General
 
@@ -10,7 +23,7 @@ with open(os.path.join(BASE_DIR, 'config', 'defaults.yml'), 'r') as f:
 
 with open(os.path.join(BASE_DIR, 'config', 'pita.yml'), 'r') as f:
     USER_CONFIG = yaml.safe_load(f) or {}
-    CONFIG.update(USER_CONFIG)
+    update(CONFIG, USER_CONFIG)
 
 with open('.keys/secret_key.txt', 'r') as f:
     SECRET_KEY = f.read().strip()
