@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.core.files import File
 from django.db import models
+from django.db.models import Q
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.urls import reverse
@@ -39,7 +40,7 @@ class Page(models.Model):
         return "Page: {}".format(self.title)
 
     class Meta:
-        ordering = ['position', 'pk']
+        ordering = ['position', '-pk']
 
 
 class Collection(Page):
@@ -111,7 +112,7 @@ class Artwork(models.Model):
         return "Artwork #{}".format(self.pk)
 
     class Meta:
-        ordering = ['position', 'pk']
+        ordering = ['position', '-pk']
 
 
 @receiver(pre_save, sender=Artwork, dispatch_uid='pita.models.update_thumb')
@@ -226,3 +227,42 @@ def create_thumbnail(artwork, size=(400, 400)):
     image.save(data, 'JPEG', quality=75, optimize=True)
 
     return data
+
+
+def update_positions(sender, instance, *args, **kwargs):
+    item = instance
+
+    if hasattr(item, '_reposition'):
+        del item._reposition
+        return
+
+    # Existing object: check if the position changed
+    if item.pk is not None:
+        current = sender.objects.get(pk=item.pk)
+        if current.position == item.position:
+            return
+
+    new = item.position
+
+    # Select other items in the new position
+    query = Q(position=new) & ~Q(pk=item.pk)
+
+    if not sender.objects.filter(query):
+        return
+
+    # Select other items in positions >= the new position
+    query = Q(position__gte=new) & ~Q(pk=item.pk)
+
+    pages = sender.objects.filter(query)
+
+    for item in pages:
+        item.position += 1
+        item._reposition = True
+
+    for item in pages:
+        item.save()
+
+pre_save.connect(update_positions, sender=Page,
+                 dispatch_uid='pita.models.update_page_positions')
+pre_save.connect(update_positions, sender=Artwork,
+                 dispatch_uid='pita.models.update_artwork_positions')

@@ -11,10 +11,7 @@ from pita.models import Artwork, Collection, Page, Redirect, Text
 
 
 def get_pages():
-    return sorted(
-        Page.objects.select_subclasses(),
-        key=lambda item: item.title.lower()
-    )
+    return Page.objects.select_subclasses().order_by('position')
 
 
 def index(request):
