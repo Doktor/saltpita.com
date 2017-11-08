@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ text.title.lower }}{% endblock %}
+{% block title %}{{ text.title.capitalize }} | {{ block.super }}{% endblock %}
 
 {% block content %}
 {% if text.html %}
