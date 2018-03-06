@@ -1,29 +1,10 @@
 import collections
 import os
-import yaml
-
-
-def update(base, new):
-    """Recursively updates a dictionary."""
-    for k, v in new.items():
-        if isinstance(v, collections.Mapping):
-            temp = update(base.get(k, {}), v)
-            base[k] = temp
-        else:
-            base[k] = new[k]
-    return base
 
 
 # General
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-with open(os.path.join(BASE_DIR, 'config', 'defaults.yml'), 'r') as f:
-    CONFIG = yaml.safe_load(f) or {}
-
-with open(os.path.join(BASE_DIR, 'config', 'pita.yml'), 'r') as f:
-    USER_CONFIG = yaml.safe_load(f) or {}
-    update(CONFIG, USER_CONFIG)
 
 with open('.keys/secret_key.txt', 'r') as f:
     SECRET_KEY = f.read().strip()
@@ -59,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'pita',
     'anymail',
+    'constance',
+    'constance.backends.database',
 ]
 
 MIDDLEWARE = [
@@ -80,6 +63,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'constance.context_processors.config',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -100,6 +84,8 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'data.db'),
     }
 }
+
+CONSTANCE_BACKEND = 'constance.backends.database.DatabaseBackend'
 
 
 # Password validation
@@ -153,3 +139,47 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+
+# Custom settings
+
+# Custom: general
+
+CONSTANCE_GENERAL = {
+}
+
+# Custom: contact information
+
+CONSTANCE_CONTACT = {
+    'CONTACT_TITLE': ("Contact", "The title of the contact page"),
+    'CONTACT_DESCRIPTION': ("", "The text to display above the contact form"),
+    'EMAIL_NAME': ("Peter Sang", "The name to send email as"),
+    'EMAIL_ADDRESS': ("saltedpita@gmail.com", "The email address"),
+    'SUBJECT_PREFIX': (
+        "[saltedpita.com]",
+        "The subject line prefix for any emails sent from the contact form"),
+}
+
+# Custom: email options
+
+CONSTANCE_EMAIL = {
+    'API_ERROR': ("The server was unable to send your email. Please try "
+                  "again later, or directly send an email to {email}.", ""),
+    'ERROR': ("An unknown error occurred when sending your email. Please try "
+              "again later, or directly send an email to {email}.", ""),
+    'INVALID': ("An unknown error occurred when sending your email. Please try "
+                "again later, or directly send an email to {email}.", ""),
+    'INVALID_ADDRESS': ("Invalid email address.", ""),
+    'SUCCESS': ("Email sent successfully.", ""),
+}
+
+# Load custom settings
+
+CONSTANCE_CONFIG = {
+    **CONSTANCE_GENERAL, **CONSTANCE_CONTACT, **CONSTANCE_EMAIL}
+
+CONSTANCE_CONFIG_FIELDSETS = collections.OrderedDict({
+    'General': CONSTANCE_GENERAL.keys(),
+    'Contact': CONSTANCE_CONTACT.keys(),
+    'Email': CONSTANCE_EMAIL.keys(),
+})

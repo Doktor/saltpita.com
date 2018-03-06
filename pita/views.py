@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.http import Http404
@@ -6,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 
 from anymail.exceptions import AnymailAPIError, AnymailInvalidAddress
-
+from constance import config
 from pita.models import Artwork, Collection, Page, Redirect, Text
 
 
@@ -28,19 +27,17 @@ def index(request):
 class ContactView(View):
     template_name = 'contact.html'
 
-    config = settings.CONFIG['contact']
-    send_to = config['email']
-    prefix = config['prefix']
+    send_to = f"{config.EMAIL_NAME} <{config.EMAIL_ADDRESS}>"
 
-    def get_message(self, result):
-        return self.config['messages'][result].format(email=self.send_to)
+    @staticmethod
+    def get_message(status):
+        return getattr(config, status).format(email=config.EMAIL_ADDRESS)
 
     def get(self, request, *args, **kwargs):
         pages = get_pages()
         context = {
-            'title': 'Contact',
+            'title': config.CONTACT_TITLE,
             'pages': pages,
-            'description': self.config['description']
         }
 
         return render(request, self.template_name, context=context)
@@ -49,30 +46,30 @@ class ContactView(View):
         data = request.POST
 
         name = data.get('name', '')
-        from_email = data.get('from_email', '')
+        sent_by = data.get('from_email', '')
         subject = data.get('subject', '')
         message = data.get('message', '')
 
         # The request contains invalid data
         # This shouldn't happen if the browser enforces the form requirements
         # correctly: the user might have sent a direct POST request
-        if not (name and from_email and subject and message):
-            messages.error(request, self.get_message('invalid'))
+        if not (name and sent_by and subject and message):
+            messages.error(request, self.get_message('INVALID'))
             return self.get(request, *args, **kwargs)
 
-        from_email = '"{}" <{}>'.format(name, from_email)
-        subject = '{} {}: {}'.format(self.prefix, name, subject)
+        sent_by = '"{}" <{}>'.format(name, sent_by)
+        subject_line = '{} {}: {}'.format(config.SUBJECT_PREFIX, name, subject)
 
         try:
-            send_mail(subject, message, from_email, [self.send_to])
+            send_mail(subject_line, message, sent_by, [self.send_to])
         except AnymailAPIError:
-            messages.error(request, self.get_message('api_error'))
+            messages.error(request, self.get_message('API_ERROR'))
         except AnymailInvalidAddress:
-            messages.error(request, self.get_message('invalid_address'))
+            messages.error(request, self.get_message('INVALID_ADDRESS'))
         except:
-            messages.error(request, self.get_message('error'))
+            messages.error(request, self.get_message('ERROR'))
         else:
-            messages.success(request, self.get_message('success'))
+            messages.success(request, self.get_message('SUCCESS'))
 
         return self.get(request, *args, **kwargs)
 

@@ -4,3 +4,4 @@ django-model-utils==3.0.0
 Pillow==4.2.1
 PyYAML==3.12
 Markdown==2.6.9
+django-constance[database]

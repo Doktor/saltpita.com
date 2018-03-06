@@ -262,6 +262,7 @@ def update_positions(sender, instance, *args, **kwargs):
     for item in pages:
         item.save()
 
+
 pre_save.connect(update_positions, sender=Page,
                  dispatch_uid='pita.models.update_page_positions')
 pre_save.connect(update_positions, sender=Artwork,

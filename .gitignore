@@ -26,6 +26,3 @@ media/
 
 # Development mode
 development
-
-# Custom settings
-config/pita.yml

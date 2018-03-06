@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Contact | {{ block.super }}{% endblock %}
+{% block title %}{{ config.CONTACT_TITLE }} | {{ block.super }}{% endblock %}
 
 {% block content %}
 {% if messages %}
@@ -12,7 +12,7 @@
 {% endif %}
 
 <section class="contact">
-  <p>{{ description }}</p>
+  <p>{{ config.CONTACT_DESCRIPTION }}</p>
 
   <form action="{% url 'contact' %}" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
