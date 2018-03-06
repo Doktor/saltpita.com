@@ -8,9 +8,6 @@ data.db
 __pycache__/
 .pyc
 
-# Utilities
-*.bat
-
 # PyCharm files
 .idea/
 
@@ -26,3 +23,6 @@ media/
 
 # Development mode
 development
+
+# Logs
+logs/
