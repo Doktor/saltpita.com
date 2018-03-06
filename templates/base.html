@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   {% load staticfiles %}
 
-  <title>{% block title %}Art by Peter Sang{% endblock %}</title>
-  <meta name="author" content="Peter Sang">
-  <meta name="description" content="{% block description %}the art of Peter Sang{% endblock %}">
+  <title>{% block title %}{{ config.TITLE }}{% endblock %}</title>
+  <meta name="author" content="{{ config.NAME }}">
+  <meta name="description" content="{% block description %}{{ config.DESCRIPTION }}{% endblock %}">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   {% block meta %}{% endblock %}
 
@@ -20,7 +20,7 @@
   <header>
     <nav>
       <ul class="horizontal">
-        <li class="name"><a href="{% url 'index' %}">PETER SANG</a></li>
+        <li class="name"><a href="{% url 'index' %}">{{ config.NAME.upper }}</a></li>
       {% for page in pages %}
         {% if page.title == title %}<li class="selected">{% else %}<li>{% endif %}
         <a href="{{ page.get_absolute_url }}">{{ page.title.lower }}</a></li>
@@ -35,8 +35,8 @@
 
   <footer>
     <ul class="horizontal">
-      <li>&copy; 2017 Peter Sang</li>
-      <li>saltedpita@gmail.com</li>
+      <li>&copy; {{ config.COPYRIGHT_YEARS }} {{ config.NAME }}</li>
+      <li>{{ config.EMAIL_ADDRESS }}</li>
     </ul>
   </footer>
 </body>

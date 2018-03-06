@@ -146,6 +146,10 @@ MEDIA_URL = '/media/'
 # Custom: general
 
 CONSTANCE_GENERAL = {
+    'TITLE': ("Art by Peter Sang", "The site title, used in tab titles"),
+    'NAME': ("Peter Sang", ""),
+    'DESCRIPTION': ("", "The site description, used for metadata"),
+    'COPYRIGHT_YEARS': ("2018-2018", "")
 }
 
 # Custom: contact information
