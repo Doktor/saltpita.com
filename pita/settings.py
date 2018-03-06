@@ -149,7 +149,8 @@ CONSTANCE_GENERAL = {
     'TITLE': ("Art by Peter Sang", "The site title, used in tab titles"),
     'NAME': ("Peter Sang", ""),
     'DESCRIPTION': ("", "The site description, used for metadata"),
-    'COPYRIGHT_YEARS': ("2018-2018", "")
+    'COPYRIGHT_YEARS': ("2018-2018", ""),
+    'TERMS_OF_SERVICE_URL': ("", ""),
 }
 
 # Custom: contact information
