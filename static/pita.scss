@@ -46,11 +46,8 @@ $width: 400px;
     @media (min-width: $width * 2 + 1) and (max-width: $width * 3) {
       width: (100% / 3);
     }
-    @media (min-width: $width * 3 + 1) and (max-width: $width * 4) {
+    @media (min-width: $width * 3 + 1) {
       width: (100% / 4);
-    }
-    @media (min-width: $width * 4 + 1) {
-      width: (100% / 5);
     }
 
     img {

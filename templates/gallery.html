@@ -18,10 +18,12 @@
 
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
 <script>
-  let el = document.getElementsByClassName('container')[0];
-  const masonry = new Masonry(el, {
-    itemSelector: '.item',
-    percentPosition: true,
+  document.addEventListener("DOMContentLoaded", function() {
+    let el = document.getElementsByClassName('container')[0];
+    const masonry = new Masonry(el, {
+      itemSelector: '.item',
+      percentPosition: true,
+    });
   });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/luminous-lightbox/1.0.1/Luminous.min.js"></script>
