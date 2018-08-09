@@ -17,9 +17,10 @@
 </section>
 
 <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+<script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    let el = document.getElementsByClassName('container')[0];
+  let el = document.getElementsByClassName('container')[0];
+  new imagesLoaded(el, function() {
     const masonry = new Masonry(el, {
       itemSelector: '.item',
       percentPosition: true,
