@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django-anymail = "==3.0"
+django-model-utils = "==3.1.2"
+django-constance = {version = "*", extras = ["database"]}
+Django = "==2.1"
+Pillow = "*"
+PyYAML = "*"
+Markdown = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.7"

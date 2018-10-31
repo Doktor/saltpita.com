@@ -1,7 +1,0 @@
-Django==2.1
-django-anymail==3.0
-django-model-utils==3.1.2
-Pillow==4.2.1
-PyYAML==3.12
-Markdown==2.6.9
-django-constance[database]
