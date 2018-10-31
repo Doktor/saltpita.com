@@ -1,8 +1,7 @@
-# Keys
-.keys/
-
-# Database file
+# Sensitive data
 data.db
+keys/
+logs/
 
 # Python bytecode
 __pycache__/
@@ -25,4 +24,6 @@ media/
 development
 
 # Logs
-logs/
+
+# Other
+.DS_Store

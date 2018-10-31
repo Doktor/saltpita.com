@@ -6,7 +6,7 @@ import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-with open('.keys/secret_key.txt', 'r') as f:
+with open('keys/secret_key.txt', 'r') as f:
     SECRET_KEY = f.read().strip()
 
 DEBUG = os.path.isfile('development')
@@ -18,7 +18,7 @@ ALLOWED_HOSTS = [
 
 # Email settings
 
-with open(os.path.join(BASE_DIR, '.keys/mailgun.txt'), 'r') as f:
+with open(os.path.join(BASE_DIR, 'keys/mailgun.txt'), 'r') as f:
     MAILGUN_API_KEY = f.read().strip()
 
 ANYMAIL = {
