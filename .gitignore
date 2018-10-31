@@ -16,9 +16,10 @@ pita/migrations/
 # Media files
 media/
 
-# Compiled CSS files
+# Compiled files
 *.css
 *.css.map
+static.1/
 
 # Development mode
 development

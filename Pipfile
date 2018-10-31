@@ -11,6 +11,7 @@ Django = "==2.1"
 Pillow = "*"
 PyYAML = "*"
 Markdown = "*"
+invoke = "*"
 
 [dev-packages]
 
