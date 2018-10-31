@@ -13,7 +13,7 @@ DEBUG = os.path.isfile('development')
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'strayleader.com',
+    'saltedpita.com',
 ]
 
 # Email settings
@@ -23,11 +23,11 @@ with open(os.path.join(BASE_DIR, 'keys/mailgun.txt'), 'r') as f:
 
 ANYMAIL = {
     'MAILGUN_API_KEY': MAILGUN_API_KEY,
-    'MAILGUN_SENDER_DOMAIN': 'strayleader.com',
+    'MAILGUN_SENDER_DOMAIN': 'saltedpita.com',
 }
 
-EMAIL_BACKEND = 'anymail.backends.mailgun.MailgunBackend'
-DEFAULT_FROM_EMAIL = 'Django <django@strayleader.com>'
+EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
+DEFAULT_FROM_EMAIL = 'Django <django@saltedpita.com>'
 
 # Application definition
 
