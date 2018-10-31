@@ -165,9 +165,21 @@ ul.horizontal {
   li {
     font-size: 1rem;
     line-height: 2rem;
-    float: left;
-    margin: 0 2rem 0 0;
     position: relative;
+
+    text-align: center;
+    float: none;
+    margin: 0;
+
+    @media (min-width: 601px) {
+      text-align: left;
+      float: left;
+      margin: 0 2rem 0 0;
+
+      footer & {
+        float: right;
+      }
+    }
   }
 }
 
