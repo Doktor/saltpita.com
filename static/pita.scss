@@ -84,6 +84,7 @@ $width: 400px;
 .text {
   width: 100%;
   margin: 0 auto;
+  font-size: 1rem;
 
   @media (min-width: 1200px) {
     width: 60%;
@@ -187,11 +188,16 @@ footer {
   clear: both;
   margin: 0 auto;
   padding-top: 2rem;
+
+  &, & a {
+    color: rgb(160, 160, 160);
+  }
 }
 
 .contact {
   width: 100%;
   margin: 0 auto;
+  font-size: 1rem;
 
   p {
     text-align: center;
