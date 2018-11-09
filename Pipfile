@@ -12,8 +12,8 @@ Pillow = "*"
 PyYAML = "*"
 Markdown = "*"
 invoke = "*"
-
-[dev-packages]
+django-picklefield = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.7"
