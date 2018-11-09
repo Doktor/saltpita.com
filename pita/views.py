@@ -38,6 +38,7 @@ class ContactView(View):
         context = {
             'title': config.CONTACT_TITLE,
             'pages': pages,
+            'form': kwargs.pop('form', None),
         }
 
         return render(request, self.template_name, context=context)
@@ -49,6 +50,13 @@ class ContactView(View):
         sent_by = data.get('from_email', '')
         subject = data.get('subject', '')
         message = data.get('message', '')
+
+        form = {
+            'name': name,
+            'sent_by': sent_by,
+            'subject': subject,
+            'message': message,
+        }
 
         # The request contains invalid data
         # This shouldn't happen if the browser enforces the form requirements
@@ -62,16 +70,17 @@ class ContactView(View):
 
         try:
             send_mail(subject_line, message, sent_by, [self.send_to])
-        except AnymailAPIError:
+        except AnymailAPIError as e:
             messages.error(request, self.get_message('API_ERROR'))
         except AnymailInvalidAddress:
             messages.error(request, self.get_message('INVALID_ADDRESS'))
         except:
             messages.error(request, self.get_message('ERROR'))
         else:
+            form = None
             messages.success(request, self.get_message('SUCCESS'))
 
-        return self.get(request, *args, **kwargs)
+        return self.get(request, *args, form=form, **kwargs)
 
 
 def page(request, slug):
