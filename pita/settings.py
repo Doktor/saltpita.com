@@ -13,7 +13,7 @@ DEBUG = os.path.isfile('development')
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
-    'saltedpita.com',
+    'saltpita.com',
 ]
 
 # Email settings
@@ -23,11 +23,11 @@ with open(os.path.join(BASE_DIR, 'keys/mailgun.txt'), 'r') as f:
 
 ANYMAIL = {
     'MAILGUN_API_KEY': MAILGUN_API_KEY,
-    'MAILGUN_SENDER_DOMAIN': 'saltedpita.com',
+    'MAILGUN_SENDER_DOMAIN': 'saltpita.com',
 }
 
 EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
-DEFAULT_FROM_EMAIL = 'Django <django@saltedpita.com>'
+DEFAULT_FROM_EMAIL = 'Django <django@saltpita.com>'
 
 # Application definition
 
@@ -158,7 +158,7 @@ CONSTANCE_CONTACT = {
     'EMAIL_NAME': ("Peter Sang", "The name to send email as"),
     'EMAIL_ADDRESS': ("saltedpita@gmail.com", "The email address"),
     'SUBJECT_PREFIX': (
-        "[saltedpita.com]",
+        "[saltpita.com]",
         "The subject line prefix for any emails sent from the contact form"),
 }
 
