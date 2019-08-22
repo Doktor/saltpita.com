@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from pita.models import Artwork, Collection, Page, Redirect, Text
+from pita.models import (
+    Artwork, Collection, Comic, ComicPage, Page, Redirect, Text)
 
 
 class BaseAdmin(admin.ModelAdmin):
@@ -97,3 +98,13 @@ class ArtworkAdmin(BaseAdmin):
 
     collection_title.admin_order_field = 'collection__title'
     collection_title.short_description = 'Collection'
+
+
+@admin.register(Comic)
+class ComicAdmin(BaseAdmin):
+    pass
+
+
+@admin.register(ComicPage)
+class ComicPageAdmin(BaseAdmin):
+    pass

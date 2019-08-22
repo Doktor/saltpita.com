@@ -1,12 +1,13 @@
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.http import Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 
 from anymail.exceptions import AnymailAPIError, AnymailInvalidAddress
 from constance import config
-from pita.models import Artwork, Collection, Page, Redirect, Text
+from pita.models import (
+    Artwork, Collection, Comic, ComicPage, Page, Redirect, Text)
 
 
 def get_pages():
@@ -117,3 +118,22 @@ def page(request, slug):
         raise Http404
     else:
         return redirect(r.link, permanent=False)
+
+
+def comic_index(request):
+    comics = Comic.objects.all()
+
+    return render(request, "comics.html", context={'comics': comics})
+
+
+def view_comic(request, slug, number=None):
+    comic = get_object_or_404(Comic, slug=slug)
+    page = get_object_or_404(ComicPage, comic__slug=slug, number=number)
+
+    context = {
+        'comic': comic,
+        'page': page,
+        'pages': get_pages(),
+    }
+
+    return render(request, "comic.html", context=context)

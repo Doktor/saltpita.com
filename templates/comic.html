@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}{{ comic.title.capitalize }} &mdash; page {{ page.number }} | {{ block.super }}{% endblock %}
+
+{% block content %}
+<section class="comic-image">
+  <img src="{{ page.image.url }}" alt="Comic page">
+</section>
+
+<section class="comic-nav-container">
+  <ul class="comic-nav">
+    {% for link in page.get_links %}
+    <li>{{ link }}</li>
+    {% endfor %}
+  </ul>
+</section>
+{% endblock %}

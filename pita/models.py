@@ -1,10 +1,11 @@
 from django.core.exceptions import ValidationError
 from django.core.files import File
 from django.db import models
-from django.db.models import Q
+from django.db.models import Q, QuerySet
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 from django.utils.text import slugify
 
 import os
@@ -13,6 +14,7 @@ import uuid
 from io import BytesIO
 from markdown import markdown
 from model_utils.managers import InheritanceManager
+from typing import Optional
 
 
 class Page(models.Model):
@@ -267,3 +269,79 @@ pre_save.connect(update_positions, sender=Page,
                  dispatch_uid='pita.models.update_page_positions')
 pre_save.connect(update_positions, sender=Artwork,
                  dispatch_uid='pita.models.update_artwork_positions')
+
+
+def get_comic_page_path(page: 'ComicPage', original_name: str) -> str:
+    _, ext = os.path.splitext(original_name)
+    ext = ext.lstrip('.')
+
+    return f"comics/{page.comic.slug}/{page.number}.{ext}"
+
+
+class Comic(models.Model):
+    title = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100)
+
+    def __str__(self) -> str:
+        return self.title
+
+    def get_absolute_url(self) -> str:
+        return reverse('comic', kwargs={'slug': self.slug})
+
+
+class ComicPage(models.Model):
+    comic = models.ForeignKey(
+        Comic, on_delete=models.PROTECT, related_name='pages')
+    number = models.PositiveSmallIntegerField()
+
+    image = models.ImageField(upload_to=get_comic_page_path)
+    uploaded = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"{self.comic.title}, page {self.number}"
+
+    def get_absolute_url(self) -> str:
+        return reverse('comic_page', kwargs={'slug': self.comic.slug, 'number': self.number})
+
+    # Navigation
+
+    def get_qs(self) -> QuerySet:
+        return ComicPage.objects.filter(comic=self.comic)
+
+    def get_first(self) -> Optional['ComicPage']:
+        qs = self.get_qs().filter(number__lte=self.number).order_by('number')
+        return qs[0] if qs else None
+
+    def get_previous(self) -> Optional['ComicPage']:
+        qs = self.get_qs().filter(number__lt=self.number).order_by('-number')
+        return qs[0] if qs else None
+
+    def get_next(self) -> Optional['ComicPage']:
+        qs = self.get_qs().filter(number__gt=self.number).order_by('number')
+        return qs[0] if qs else None
+
+    def get_last(self) -> Optional['ComicPage']:
+        qs = self.get_qs().filter(number__gte=self.number).order_by('-number')
+        return qs[0] if qs else None
+
+    @staticmethod
+    def get_link(page, label, icon_name) -> str:
+        icon = f"<i class=\"fas fa-fw fa-{icon_name}\"></i>"
+        text = f"<span>{label}</span>"
+
+        if page is not None:
+            ret = f"<a href=\"{page.get_absolute_url()}\">{icon}{text}</a>"
+        else:
+            ret = f"{icon}{text}"
+
+        return mark_safe(ret)
+
+    def get_links(self) -> list:
+        links = [
+            (self.get_first(), 'First', 'angle-double-left'),
+            (self.get_previous(), 'Prev', 'angle-left'),
+            (self.get_next(), 'Next', 'angle-right'),
+            (self.get_last(), 'Last', 'angle-double-right'),
+        ]
+
+        return [self.get_link(*link) for link in links]
